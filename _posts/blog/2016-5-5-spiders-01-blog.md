@@ -1,0 +1,160 @@
+---
+layout:     post
+title:      分布式爬虫笔记-1. 环境部署
+category: blog
+description: Scrapy-Redis-MongoDB架构之1.环境部署。
+---
+
+#分布式爬虫笔记-1. 环境部署
+
+- Author:  Zhao
+- Date:     2016-4-13
+- E-mail:  zhongwei_bupt@163.com
+
+----------------------
+
+>写在前面：本篇系统环境为CentOS 7.0 -阿里云主机、CentOS 6.5 -腾讯云主机。
+
+[TOC]
+
+
+##版本说明
+
+###Master主机
+
+* CentOS 7.0 -阿里云主机
+* Python 2.7.5
+* Scrapy 1.0.5
+* pip 8.1.1
+* redis-py 2.10.5
+* Redis-3.0.7
+* pymongo-3.2.2
+* MongoDB-3.2.2
+* scrapy-redis-0.6.0
+* requests-2.10.0
+
+###Slaver 主机
+* CentOS 6.5 -腾讯云主机
+* Python 2.7.11
+* Scrapy 1.0.5
+* redis-py 2.10.5
+* pymongo-3.2.2
+* redis-2.10.5-py2.py3-none-any.whl
+* pip 8.1.1
+* requests-2.10.0
+
+##Master主机环境部署
+
+###Requests安装
+
+``` bash
+pip install requests
+```
+
+###scrapy-redis安装
+
+``` bash
+pip install scrapy-redis
+```
+
+###redis-py安装
+
+``` bash
+pip install redis
+pip install hiredis
+```
+
+###Redis安装
+
+``` bash
+wget http://download.redis.io/releases/redis-3.0.7.tar.gz
+tar xzf redis-3.0.7.tar.gz
+cd redis-3.0.7
+make
+```
+
+``` bash
+$ cd ./src
+$ ./redis-cli
+127.0.0.1:6379> PING
+PONG
+127.0.0.1:6379> INFO
+
+# Server
+redis_version:3.0.7
+redis_git_sha1:00000000
+redis_git_dirty:0
+redis_build_id:22c4bf2abbb59838
+redis_mode:standalone
+os:Linux 3.10.0-123.9.3.el7.x86_64 x86_64
+```
+
+后台运行：
+``` bash
+./redis-server &  
+```
+
+`vi /etc/sysconfig/iptable`开放`6379`端口：
+
+``` bash
+# redis
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 6379 -j ACCEPT
+```
+
+保存重启iptables：
+
+``` bash
+/etc/init.d/iptables restart
+#or 
+service iptables restart
+```
+
+###pymongo安装
+
+PyMongo is a Python distribution containing tools for working with MongoDB, and is the recommended way to work with MongoDB from Python.
+
+``` bash
+pip install pymongo
+```
+
+###MongoDB安装
+
+Create a `/etc/yum.repos.d/mongodb-org-3.2.repo` file :
+
+``` bash
+[mongodb-org-3.2]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.2/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc
+```
+
+``` bash
+yum install -y mongodb-org
+yum install -y mongodb-org-3.2.4 mongodb-org-server-3.2.4 mongodb-org-shell-3.2.4 mongodb-org-mongos-3.2.4 mongodb-org-tools-3.2.4
+```
+
+``` bash
+service mongod start
+chkconfig mongod on
+```
+
+`vi /etc/sysconfig/iptable`开放`27017`端口：
+
+``` bash
+# mongodb
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 27017 -j ACCEPT
+```
+
+保存重启iptables：
+
+``` bash
+/etc/init.d/iptables restart
+#or 
+service iptables restart
+```
+
+##Slaver主机环境部署
+
+只需安装`Python 2.7`、`requests`、`redis-py`和`pymongo`。
