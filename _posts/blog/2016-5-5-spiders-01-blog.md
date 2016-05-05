@@ -1,11 +1,11 @@
----
+ï»¿---
 layout:     post
-title:      ·Ö²¼Ê½ÅÀ³æ±Ê¼Ç-1. »·¾³²¿Êğ
+title:      #åˆ†å¸ƒå¼çˆ¬è™«ç¬”è®°-1. ç¯å¢ƒéƒ¨ç½²
 category: blog
-description: Scrapy-Redis-MongoDB¼Ü¹¹Ö®1.»·¾³²¿Êğ¡£
+description: Scrapy-Redis-MongoDBæ¶æ„Ö®1.ç¯å¢ƒéƒ¨ç½²
 ---
 
-#·Ö²¼Ê½ÅÀ³æ±Ê¼Ç-1. »·¾³²¿Êğ
+#åˆ†å¸ƒå¼çˆ¬è™«ç¬”è®°-1. ç¯å¢ƒéƒ¨ç½²
 
 - Author:  Zhao
 - Date:     2016-4-13
@@ -13,16 +13,16 @@ description: Scrapy-Redis-MongoDB¼Ü¹¹Ö®1.»·¾³²¿Êğ¡£
 
 ----------------------
 
->Ğ´ÔÚÇ°Ãæ£º±¾ÆªÏµÍ³»·¾³ÎªCentOS 7.0 -°¢ÀïÔÆÖ÷»ú¡¢CentOS 6.5 -ÌÚÑ¶ÔÆÖ÷»ú¡£
+>å†™åœ¨å‰é¢ï¼šæœ¬ç¯‡ç³»ç»Ÿç¯å¢ƒä¸ºCentOS 7.0 -é˜¿é‡Œäº‘ä¸»æœºã€CentOS 6.5 -è…¾è®¯äº‘ä¸»æœºã€‚
 
 [TOC]
 
 
-##°æ±¾ËµÃ÷
+##ç‰ˆæœ¬è¯´æ˜
 
-###MasterÖ÷»ú
+###Masterä¸»æœº
 
-* CentOS 7.0 -°¢ÀïÔÆÖ÷»ú
+* CentOS 7.0 -é˜¿é‡Œäº‘ä¸»æœº
 * Python 2.7.5
 * Scrapy 1.0.5
 * pip 8.1.1
@@ -33,8 +33,8 @@ description: Scrapy-Redis-MongoDB¼Ü¹¹Ö®1.»·¾³²¿Êğ¡£
 * scrapy-redis-0.6.0
 * requests-2.10.0
 
-###Slaver Ö÷»ú
-* CentOS 6.5 -ÌÚÑ¶ÔÆÖ÷»ú
+###Slaver ä¸»æœº
+* CentOS 6.5 -è…¾è®¯äº‘ä¸»æœº
 * Python 2.7.11
 * Scrapy 1.0.5
 * redis-py 2.10.5
@@ -43,28 +43,28 @@ description: Scrapy-Redis-MongoDB¼Ü¹¹Ö®1.»·¾³²¿Êğ¡£
 * pip 8.1.1
 * requests-2.10.0
 
-##MasterÖ÷»ú»·¾³²¿Êğ
+##Masterä¸»æœºç¯å¢ƒéƒ¨ç½²
 
-###Requests°²×°
+###Requestså®‰è£…
 
 ``` bash
 pip install requests
 ```
 
-###scrapy-redis°²×°
+###scrapy-rediså®‰è£…
 
 ``` bash
 pip install scrapy-redis
 ```
 
-###redis-py°²×°
+###redis-pyå®‰è£…
 
 ``` bash
 pip install redis
 pip install hiredis
 ```
 
-###Redis°²×°
+###Rediså®‰è£…
 
 ``` bash
 wget http://download.redis.io/releases/redis-3.0.7.tar.gz
@@ -89,19 +89,19 @@ redis_mode:standalone
 os:Linux 3.10.0-123.9.3.el7.x86_64 x86_64
 ```
 
-ºóÌ¨ÔËĞĞ£º
+åå°è¿è¡Œï¼š
 ``` bash
 ./redis-server &  
 ```
 
-`vi /etc/sysconfig/iptable`¿ª·Å`6379`¶Ë¿Ú£º
+`vi /etc/sysconfig/iptable`å¼€æ”¾`6379`ç«¯å£ï¼š
 
 ``` bash
 # redis
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 6379 -j ACCEPT
 ```
 
-±£´æÖØÆôiptables£º
+ä¿å­˜é‡å¯iptablesï¼š
 
 ``` bash
 /etc/init.d/iptables restart
@@ -109,7 +109,7 @@ os:Linux 3.10.0-123.9.3.el7.x86_64 x86_64
 service iptables restart
 ```
 
-###pymongo°²×°
+###pymongoå®‰è£…
 
 PyMongo is a Python distribution containing tools for working with MongoDB, and is the recommended way to work with MongoDB from Python.
 
@@ -117,7 +117,7 @@ PyMongo is a Python distribution containing tools for working with MongoDB, and 
 pip install pymongo
 ```
 
-###MongoDB°²×°
+###MongoDBå®‰è£…
 
 Create a `/etc/yum.repos.d/mongodb-org-3.2.repo` file :
 
@@ -140,14 +140,14 @@ service mongod start
 chkconfig mongod on
 ```
 
-`vi /etc/sysconfig/iptable`¿ª·Å`27017`¶Ë¿Ú£º
+`vi /etc/sysconfig/iptable`å¼€æ”¾`27017`ç«¯å£ï¼š
 
 ``` bash
 # mongodb
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 27017 -j ACCEPT
 ```
 
-±£´æÖØÆôiptables£º
+ä¿å­˜é‡å¯iptablesï¼š
 
 ``` bash
 /etc/init.d/iptables restart
@@ -155,6 +155,7 @@ chkconfig mongod on
 service iptables restart
 ```
 
-##SlaverÖ÷»ú»·¾³²¿Êğ
+##Slaverä¸»æœºç¯å¢ƒéƒ¨ç½²
 
-Ö»Ğè°²×°`Python 2.7`¡¢`requests`¡¢`redis-py`ºÍ`pymongo`¡£
+åªéœ€å®‰è£…`Python 2.7`ã€`requests`ã€`redis-py`å’Œ`pymongo`ã€‚
+
