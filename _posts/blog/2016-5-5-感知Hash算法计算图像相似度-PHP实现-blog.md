@@ -5,10 +5,6 @@ category: blog
 description: 使用PHP实现Perceptual-Hash
 ---
 
-#感知Hash算法计算图像相似度-PHP实现
-
-[TOC]
-
 ##原理说明
 
 ###概述
