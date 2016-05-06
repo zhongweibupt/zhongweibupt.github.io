@@ -38,29 +38,9 @@ description: 使用PHP实现Perceptual-Hash
 
 ###环境部署
 
-本文环境是`CentOS 7.0`，PHP版本为`5.4`。请确保安装以下包：
+略
 
-```
-yum install php-unit
-yum install libgmp-dev
-yum install php-gmp
-service apache2 reload
-```
-
-本文的算法实现参考[pHash开源库](http://www.phash.org/docs/)，该项目是基于C++开发的。不过这里我们使用了[jenssegers/imagehash](https://github.com/jenssegers/imagehash)项目的PHP工具，只需要按指导安装[jenssegers/imagehash](https://github.com/jenssegers/imagehash)即可。
-
-首先安装Composer，使用Composer安装。本文使用的是`Composer 1.0.3`：
-
-``` bash
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
-composer -V
-composer require jenssegers/imagehash
-```
-
-如果不成功也可以下载[jenssegers/imagehash](https://github.com/jenssegers/imagehash)源码，直接调用。（这种方法不推荐，包依赖可能会出问题）
-
-###代码说明
+###部分代码说明
 
 计算图片的Hash值：
 
@@ -90,6 +70,8 @@ $distance = $hasher->compare('path/to/image1.jpg', 'path/to/image2.jpg');
 ###测试用例
 
 这里使用的用例是指定的`树叶图像`。我们选取以下8张正面图片，分别编号从`1-8`，以及8张反面图片，分别编号从`1_1-8_1`。
+
+![Git Bash](/images/图片1.png)
 
 然后用以下代码计算对应的汉明距离：
 
@@ -127,5 +109,5 @@ echo "</table>";
 pHash算法可以快速从海量图片中筛选相似图片，但不能解决精匹配问题，因为图片变换（旋转、缩放、投影）对pHash算法的影响较大。待解决问题总结如下：
 
 1. 精匹配问题。利用pHash快速匹配后可以用`SIFT特征，互信息、互相关、PNSR等`配准和计算相似度。
-2. 图像的自动ReSize问题。根据样本模板自动调整待搜索图片的尺寸和角度，算法待设计。 
+2. 图像的自动ReSize问题。根据样本模板自动调整待搜索图片的尺寸和角度，算法待设计。 (Ps. 最好采用窗口搜索的方法，类似于目标检测，比图像变换效果要好。)
 
