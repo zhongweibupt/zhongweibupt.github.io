@@ -21,7 +21,7 @@ description: 使用Python实现基于重心临界多边形的排样算法
 
 ####1.2.1 流程图
 
-![Git Bash](./chart-SA.png)
+![Git Bash](./images/chart-SA.png)
 
 ####1.2.2 算法描述
 
@@ -88,7 +88,7 @@ $$center=\begin{pmatrix}
 
 这里的算法流程参考上海交通大学刘胡瑶的博士论文：[基于临界多边形的二维排样算法研究](http://cdmd.cnki.com.cn/Article/CDMD-10248-2007153774.htm)。
 
-![Git Bash](./algorithm-SA.png)
+![Git Bash](./images/algorithm-SA.png)
 
 
 ##2. 实现方法
