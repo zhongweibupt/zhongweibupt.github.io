@@ -21,26 +21,7 @@ description: 使用Python实现基于重心临界多边形的排样算法
 
 ####1.2.1 流程图
 
-```flow
-st=>start: 输入参数
-e=>end: 完成定位
-op1=>operation: 计算重心位置
-op2=>operation: 取零件开始定位
-op3=>operation: 初始化最低重心位置
-op4=>operation: 按步长搜索边界
-和旋转空间，计算NFP
-op5=>operation: 更新步长
-cond1=>condition: 迭代搜索次数达到要求
-op6=>operation: 更新约束边界
-cond2=>condition: 所有零件被定位
-
-st->op1->op2->op3->op4->op5->cond1
-cond1(yes)->op6
-cond1(no)->op3
-op6->cond2
-cond2(yes)->e
-cond2(no)->op2
-```
+![Git Bash](./chart-SA.png)
 
 ####1.2.2 算法描述
 
