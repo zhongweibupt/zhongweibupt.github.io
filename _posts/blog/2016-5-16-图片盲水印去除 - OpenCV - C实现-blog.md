@@ -5,10 +5,6 @@ category: blog
 description: 自动检测水印和复原图像
 ---
 
-#图片盲水印去除 - OpenCV - C/C++实现
-
-[TOC]
-
 ##1. 概述
 
 算法目标是批量检测和去除图片的水印，去除部分使用OpenCV的InPaint接口不难实现，终点在于如何识别和分割水印。
