@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Notty Notes
-category: project
+category: favorite
 description: 对于不满意确很需要的东西，只能自己动手，比如这个Chrome的便签插件。
 ---
 
