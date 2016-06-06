@@ -54,6 +54,7 @@ $distance = $hasher->distance($hash1, $hash2);
 ```
 
 计算两张图片的相似度：
+
 ``` php
 use Jenssegers\ImageHash\Implementations\DifferenceHash;
 use Jenssegers\ImageHash\ImageHash;
@@ -62,6 +63,7 @@ $implementation = new DifferenceHash;
 $hasher = new ImageHash($implementation);
 $distance = $hasher->compare('path/to/image1.jpg', 'path/to/image2.jpg');
 ```
+
 
 ###测试用例
 

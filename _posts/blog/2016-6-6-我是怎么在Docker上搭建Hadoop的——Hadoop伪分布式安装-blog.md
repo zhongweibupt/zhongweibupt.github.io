@@ -79,16 +79,19 @@ docker pull index.alauda.cn/kiwenlau/hadoop-slave:0.1.0
 docker pull index.alauda.cn/kiwenlau/hadoop-base:0.1.0
 docker pull index.alauda.cn/kiwenlau/serf-dnsmasq:0.1.0
 ```
-![Git Bash](./1465194453673.png)
+
+![Git Bash](./images/hadoop/1465194453673.png)
 
 根据镜像ID修改镜像tag：
+
 ```
 docker tag 9f47b3ddd0ce kiwenlau/hadoop-slave:0.1.0
 docker tag d9caf424ada8 kiwenlau/hadoop-master:0.1.0
 docker tag 2b0c8d64c68c kiwenlau/hadoop-base:0.1.0
 docker tag dfdeda969842 kiwenlau/serf-dnsmasq:0.1.0
 ```
-![Git Bash](./1465194601285.png)
+
+![Git Bash](./images/hadoop/1465194601285.png)
 
 ##5. 三节点集群搭建和管理
 
@@ -166,17 +169,20 @@ ctrl+d可以退出容器，ctrl+Q+P可以退出不停止。
 ##7. 删除容器
 
 查看处于终止状态的容器：
+
 ``` bash
 docker ps -a
 ```
 ![Git Bash](./images/hadoop/1465198332649.png)
 
 删除容器：
+
 ``` bash
 docker rm 2142b46fd80f
 docker rm 96e2417ba9c1
 docker rm c0f08be08825
 ```
+
 
 ##8. 存在问题
 
