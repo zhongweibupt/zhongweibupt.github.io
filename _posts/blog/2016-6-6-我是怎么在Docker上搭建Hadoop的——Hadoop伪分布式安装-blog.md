@@ -16,11 +16,13 @@ description: Hadoop伪分布式安装
 
 CentOS 7.0安装Docker很简单：
 
+
 ``` bash
 sudo yum install docker
 docker -v
 docker info
 ``` 
+
 ![Git bash](./images/hadoop/1464859744329.png)
 
 
@@ -34,13 +36,16 @@ ps aux | grep docker
 ``` bash
 docker info
 ```
+
 ![Git bash](./images/hadoop/1464859638241.png)
 
 CentOS 6.5要麻烦一些：
+
 ``` bash
 rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 yum install docker-io
 ```
+
 
 
 ##2. 获取镜像
@@ -52,10 +57,13 @@ docker pull centos:latest
 ![Git Bash](./images/hadoop/1465144216397.png)
 
 ##3. 启动容器
+
 ``` bash
 docker run -it centos /bin/bash
 ```
+
 就可以基于镜像启动容器了。这个命令等价于
+
 ``` bash
 docker create -it centos:last
 docker start centos
@@ -96,6 +104,7 @@ cd hadoop-cluster-docker
 ```
 
 这个脚本是是用来启动容器的，源码如下：
+
 ``` bash
 #!/bin/bash
 
@@ -131,22 +140,27 @@ done
 # create a new Bash session in the master container
 sudo docker exec -it master bash
 ```
+
 可以看到脚本默认启动一个Master节点和两个Slaver节点，并且启动时会删除旧Master节点和旧Slaver节点。
 
 运行结束后，会进入Master节点的Bash。执行
+
 ``` bash
 root@master:~# serf members
 ```
+
 可以查看节点信息。
 
 
 ##6. 测试Hadoop
 
 然后就可以测试Hadoop了，使用的用例依然是WordCount……
+
 ``` bash
 root@master:~# ./start-hadoop.sh
 root@master:~# ./run-wordcount.sh
 ```
+
 ctrl+d可以退出容器，ctrl+Q+P可以退出不停止。
 
 ##7. 删除容器
