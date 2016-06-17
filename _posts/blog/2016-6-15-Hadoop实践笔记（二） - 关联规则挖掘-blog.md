@@ -67,7 +67,7 @@ $$confidence({A}\Rightarrow{B})=P(A|B)=\frac{support\_count(A\cup{B})}{support\_
 ###2.3 提高Apriori算法效率
 
 * 基于散列：第一次遍历时，由$C_{1}$产生频繁1项集时，将所有2项集Hash计数，低于支持度阈值的从侯选集删除。如
-![Git Bash](./1465468234647.png)
+![Git Bash](/images/hadoop-2/1465468234647.png)
 
 * 事物压缩：不包含k项集的事务不可能包含任何k+1项集，下一步迭代就可以删除。
 

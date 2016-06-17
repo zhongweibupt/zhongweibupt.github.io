@@ -58,7 +58,7 @@ CSV文件中的一行是这样的：
 以及垂直数据格式：
 
 |artist_id  |Ds | set_(user_id:play_count)|play_sum|
-|:--------|--------|---------|
+|:--------|--------|---------|---------|
 
 ####2.1.2 csv导入MySQL数据库
 
@@ -102,9 +102,9 @@ mysql -u root -p
 
 当然我们也可以使用Hadoop处理数据，~~实际上小于1TB的数据完全没有必要使用Hadoop，我们的目的是构造一个可以在Hadoop上使用的FP算法，后续会在Mahout上继续研究。~~得到例如：
 
-|Key|Value|
-|:---|---|
-|affair_id|artists_set|
+| Key       | Value       |
+| :-------- | ----------- |
+| affair_id | artists_set |
 
 这样的结构。affair_id用user_id和Ds组合（其实可以Hash一下）得到。
 
