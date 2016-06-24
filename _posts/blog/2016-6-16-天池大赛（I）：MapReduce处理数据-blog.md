@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:     Hadoop实践笔记（三） - 天池大赛（I）：MapReduce处理数据
+title:     天池大赛（I）：MapReduce处理数据
 category: blog
-description: Hadoop实践笔记（三） - 天池大赛（I）：MapReduce处理数据
+description: 天池大赛（I）：MapReduce处理数据
 ---
 
 

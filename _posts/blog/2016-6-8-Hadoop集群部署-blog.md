@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:     Hadoop实践笔记（一） - 集群部署
+title:     Hadoop集群部署
 category: blog
-description: Hadoop实践笔记（一） - 集群部署
+description: Hadoop集群部署
 ---
 
 > 写在前面：如果有不明白的地方，请查看[Hadoop 2.7.2官方文档](http://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/ClusterSetup.html)。
