@@ -44,13 +44,19 @@ Hadoop属于Apache的Lucene项目，是一个开发和运行处理大规模数�
 安装详情见[Hadoop集群部署-By zhongwei](http://zhongweibupt.github.io/Hadoop%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2-blog)，以及[Docker安装Hadoop-By zhongwei]()。
 
 1. Master：Linux操作系统，Slave：Linux操作系统。
+
 2. 安装JDK和JRE，版本是1.7.0_75。`vi /etc/profile`配置JAVA_HOME环境变量：
+
 ```
 export JAVA_HOME=/usr/java/jdk1.7.0_75
 ```
+
 保存然后`sourve /etc/profile`。
+
 3. 下载Hadoop 2.7.2，解压到`/usr/local`。
+
 4. 配置环境变量：
+
 ```
 export HADOOP_HOME=/usr/local/hadoop-2.7.2
 export HADOOP_COMMON_HOME=$HADOOP_HOME
@@ -62,15 +68,20 @@ export HADOOP_LOG_DIR=/var/log/hadoop
 export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
 export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
 ```
+
 保存然后`sourve /etc/profile`。
+
 5. 建立SSH。在Master节点创建SSH密钥对，并且发送给Slave节点。
+
 ```
 ssh keygen
 ssh-copy-id localhost
 ssh-copy-id slave
 ```
 6. 配置文件。
+
 `vi /usr/local/hadoop-2.7.2/etc/hadoop/hdfs-site.xml`加入以下配置：
+
 ``` xml
 <configuration>
   <property>
@@ -85,11 +96,13 @@ ssh-copy-id slave
 ```
 
 将配置发给Slave节点：
+
 ```
 scp usr/local/hadoop-2.7.2/etc/hadoop/hdfs-site.xml slave:usr/local/hadoop-2.7.2/etc/hadoop/
 ```
 
 然后再在Master节点的配置中加入namenode的配置：
+
 ``` xml
 <configuration>
   <property>
@@ -100,6 +113,7 @@ scp usr/local/hadoop-2.7.2/etc/hadoop/hdfs-site.xml slave:usr/local/hadoop-2.7.2
 ```
 
 `vi /usr/local/hadoop-2.7.2/etc/hadoop/core-site.xml`加入以下配置：
+
 ``` xml
 <configuration>
   <property>
@@ -108,12 +122,15 @@ scp usr/local/hadoop-2.7.2/etc/hadoop/hdfs-site.xml slave:usr/local/hadoop-2.7.2
   </property>
 </configuration>
 ```
+
 然后发送给Slave节点：
+
 ```
 scp usr/local/hadoop-2.7.2/etc/hadoop/core-site.xml slaver:usr/local/hadoop-2.7.2/etc/hadoop/
 ```
 
 mapred-site.xml文件是MapReduce后台程序设置的配置，包括jobtracker和tasktracker。
+
 ```
 <configuration>
   <property>
@@ -122,23 +139,29 @@ mapred-site.xml文件是MapReduce后台程序设置的配置，包括jobtracker�
   </property>
 </configuration>
 ```
+
 以上配置的意思是MapReduce的执行框架设置为Hadoop YARN。最后配置yarn-site.xml文件。
 
 7. 修改master和slaves文件。将Master主机名或IP加入master文件，Slave加入slaves文件。
 8. 在Master节点创建存储目录：
+
 ```
 mkdir /usr/hadoop/datanode
 mkdir /usr/hadoop/namenode
 ssh slaver "mkdir /usr/hadoop/datanode"
 ```
+
 9. 依次格式化名称节点，启动dfs，启动YARN，查看状态：
+
 ```
 hdfs namenode -format 
 start-dfs.sh 
 start-yarn.sh 
 jps
 ```
+
 结果显示：
+
 ![Alt text](/image/2016-9-22/1474435343903.png)
 
 ##4. 如何增加一个数据节点？
@@ -154,17 +177,21 @@ jps
 
 利用exclude文件：
 1. 在Master节点上创建一个`exclude`文件，并在`conf/hdfs-site.xml`中添加如下配置：
+
 ``` xml
 <property>
 	<name>dfs.hosts.exclude</name>
 	<value>[FULL_PATH_TO_THE_EXCLUDE_FILE]</value>
 </property>
 ```
+
 2. 添加要删除的节点到`exclude`文件。
 3. 运行以下命令：
+
 ```
 hadoopdfsadmin -refreshNodes
 ```
+
 可以更新配置不影响正常任务。
 4. 如果想要恢复则从`exclude`文件删除节点重新执行以上命令。
 
@@ -221,85 +248,88 @@ Mapper类：
 
 ``` java
     public class MyMapper<K extends WritableComparable, V extends Writable> 
-    extends MapReduceBase implements Mapper<K, V, K, V> {
-       static enum MyCounters { NUM_RECORDS }
-       private String mapTaskId;
-       private String inputFile;
-       private int noRecords = 0;public void configure(JobConf job) {
-         mapTaskId = job.get(JobContext.TASK_ATTEMPT_ID);
-         inputFile = job.get(JobContext.MAP_INPUT_FILE);
-       }
+			extends MapReduceBase implements Mapper<K, V, K, V> {
+		static enum MyCounters { NUM_RECORDS }
+		private String mapTaskId;
+		private String inputFile;
+		private int noRecords = 0;public void configure(JobConf job) {
+			mapTaskId = job.get(JobContext.TASK_ATTEMPT_ID);
+			inputFile = job.get(JobContext.MAP_INPUT_FILE);
+		}
 
 		public void map(K key, V val,
                        OutputCollector<K, V> output, Reporter reporter)
-       throws IOException {
-         // Process the <key, value> pair (assume this takes a while)
-         // ...
-         // ...
-         // Let the framework know that we are alive, and kicking!
-         // reporter.progress();
-         // Process some more
-         // ...
-         // ...
-         // Increment the no. of <key, value> pairs processed
-         ++noRecords;
+		throws IOException {
+        // Process the <key, value> pair (assume this takes a while)
+        // ...
+        // ...
+        // Let the framework know that we are alive, and kicking!
+        // reporter.progress();
+        // Process some more
+        // ...
+        // ...
+        // Increment the no. of <key, value> pairs processed
+        ++noRecords;
 		// Increment counters
-         reporter.incrCounter(NUM_RECORDS, 1);
-         // Every 100 records update application-level status
-         if ((noRecords%100) == 0) {
-           reporter.setStatus(mapTaskId + " processed " + noRecords + 
-                              " from input-file: " + inputFile); 
-         }
-         // Output the result
-         output.collect(key, val);
-       }
-     } 
+        reporter.incrCounter(NUM_RECORDS, 1);
+        // Every 100 records update application-level status
+        
+		if ((noRecords%100) == 0) {
+          reporter.setStatus(mapTaskId + " processed " + noRecords + 
+                            " from input-file: " + inputFile); 
+        }
+        // Output the result
+        output.collect(key, val);
+		}
+    } 
 ```  
 
 Reduce类：
 
 ``` java
-public class MyReducer<K extends WritableComparable, V extends Writable> 
-extends MapReduceBase implements Reducer<K, V, K, V> {
-     static enum MyCounters { NUM_RECORDS }
-     private String reduceTaskId;
-     private int noKeys = 0;
-     
-     public void configure(JobConf job) {
-	     reduceTaskId = job.get(JobContext.TASK_ATTEMPT_ID);
-     }
-       
-     public void reduce(K key, Iterator<V> values, OutputCollector<K, V> output, Reporter reporter)
-       throws IOException {
-       // Process
-         int noValues = 0;
-         while (values.hasNext()) {
-           V value = values.next();
-           // Increment the no. of values for this key
-           ++noValues;
-           // Process the <key, value> pair (assume this takes a while)
-           // ...
-           // ...
-           // Let the framework know that we are alive, and kicking!
-           if ((noValues%10) == 0) {
-             reporter.progress();
-           }
-           // Process some more
-           // ...
-           // ...
-           // Output the <key, value> 
-           output.collect(key, value);
-         }
-         // Increment the no. of <key, list of values> pairs processed
-         ++noKeys;
-         // Increment counters
-         reporter.incrCounter(NUM_RECORDS, 1);
-         // Every 100 keys update application-level status
-         if ((noKeys%100) == 0) {
-           reporter.setStatus(reduceTaskId + " processed " + noKeys);
-         }
-       }
-     }
+	public class MyReducer<K extends WritableComparable, V extends Writable> 
+			extends MapReduceBase implements Reducer<K, V, K, V> {
+		static enum MyCounters { NUM_RECORDS }
+		private String reduceTaskId;
+		private int noKeys = 0;
+		 
+		public void configure(JobConf job) {
+			reduceTaskId = job.get(JobContext.TASK_ATTEMPT_ID);
+		}
+		   
+		public void reduce(K key, Iterator<V> values, OutputCollector<K, V> output, Reporter reporter)
+				throws IOException {
+			// Process
+			int noValues = 0;
+			while (values.hasNext()) {
+				V value = values.next();
+				// Increment the no. of values for this key
+				++noValues;
+				// Process the <key, value> pair (assume this takes a while)
+				// ...
+				// ...
+				// Let the framework know that we are alive, and kicking!
+				
+				if ((noValues%10) == 0) {
+					reporter.progress();
+				}
+				
+				// Process some more
+				// ...
+				// ...
+				// Output the <key, value> 
+				output.collect(key, value);
+			}
+			// Increment the no. of <key, list of values> pairs processed
+			++noKeys;
+			// Increment counters
+			reporter.incrCounter(NUM_RECORDS, 1);
+			// Every 100 keys update application-level status
+			if ((noKeys%100) == 0) {
+				reporter.setStatus(reduceTaskId + " processed " + noKeys);
+			}
+		}
+	}
 ```
 
 Reducer有三个步骤：
