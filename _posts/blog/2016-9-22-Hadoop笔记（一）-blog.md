@@ -143,6 +143,7 @@ mapred-site.xml文件是MapReduce后台程序设置的配置，包括jobtracker�
 以上配置的意思是MapReduce的执行框架设置为Hadoop YARN。最后配置yarn-site.xml文件。
 
 7. 修改master和slaves文件。将Master主机名或IP加入master文件，Slave加入slaves文件。
+
 8. 在Master节点创建存储目录：
 
 ```
@@ -235,7 +236,7 @@ reduce()函数以key以及对应的value列表作为输入，合并相同键的�
 
 以WordCount为例，输入数据被切分成分片，每个分片交给一个Map Task处理，Map Task解析出键值对。根据Reduce Task个数将结果分成分片写入本地磁盘，Reduce Task读取自己的分片，然后进行reduce()，结果输出到文件中。
 
-##9. 怎样写一个Hadoop MapReduce程序？结合源代码简要分析。
+##9. 如何写一个Hadoop MapReduce程序？结合源代码简要分析。
 
 一个MapReduce程序需要5个组件：InputFormat（解析输入文件格式），Mapper（实现map()），Partitioner（处理分片），Reducer（实现reduce()），OutputFormat（解析输出文件格式）。
 
@@ -608,7 +609,7 @@ if (initialContact != true) {//该TaskTracker不是是第一次连接JobTracker
 * LaunchTaskAction，该类封装了TaskTracker分配的新任务，新任务的类型分两种：计算型任务和辅助型任务。
 * KillTaskAction，该类封装了TaskTracker需要杀死的任务。其中计算型任务负责处理实际数据的任务，也就是的Reduce和Map任务，由专门的任务调度器去调用(默认是FIFO调度器)。另外辅助型任务包括：job-setup task、job-cleanup task和task-cleanup task三种。task-cleanup task的主要作用是清理失败的map或者reduce任务的部分结果数据，它由jobTracker直接调度，而且其调度的优先级比map和reduce任务都要高。至于job-setup task和job-cleanup task任务的作用我认为比较简单，主要是标志map和reduce作业运行开始和运行结束的同步标志。jobTracker为一个有空闲slot并且不在黑名单中的taskTracker分配任务的选择顺序是先辅助型任务然后计算型任务.
 
-##15. 怎样提交一个MapReduce作业（Job）？
+##15. 如何提交一个MapReduce作业（Job）？
 
 JobClient的runJob()方法（JobClient.runJob(conf)）可以新建一个JobClient实例并调用JobTracker.submitJob()方法。runJob()每秒轮询作业的进度，如果发现上报信息相比上一次有改动，会把进度报告输出到控制台。作业完成后，如果成功显示作业计数器，失败输出错误。
 
