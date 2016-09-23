@@ -409,7 +409,7 @@ MapReduce 通过心跳机制给TaskTracker分配任务，使JobTracker能及时�
 
 JobTracker不会主动向TaskTracker发送心跳信息，而是TaskTracker周期性调用心跳RPC函数，汇报节点和任务运行状态信息，同时领取JobTracker返回心跳包的各种命令。
 
-1. TaskTracker端
+* TaskTracker端
 
 TaskTracker中有一个run()方法，其维护了一个无限循环用于通过心跳发送任务运行状态信息和接收JobTracker通过心跳返回的命令信息：
 
@@ -493,22 +493,22 @@ TaskTracker向JobTracker发送一次心跳的流程如下：
 
 需要注意的有以下几个重要过程：
 
-* 判断是否达到心跳间隔。
+1.判断是否达到心跳间隔。
 
 TaskTracker的心跳间隔与task完成情况以及整个集群规模规模有关，源码提供一种“outOfBand”机制动态缩短TaskTracker发送心跳的间隔。
 
 从offerService()里可以找到一个`getHeartbeatInterval(finishedCount.get())`方法，这个方法会动态调整心跳，其中`finishedCount.get()`是已完成Task的计数。
 
-* 判断TaskTracker是否第一次启动。
+2.判断TaskTracker是否第一次启动。
 
 如果是第一次启动的话则会检测当前的TaskTracker版本是否和JobTracker的版本是否一致，如果版本号一致才会向JobTracker发送心跳。
 
 
-* 检测磁盘是否读写正常。
+3.检测磁盘是否读写正常。
 
 MapReduce框架中，在map任务计算过程中会将输出结果保存在mapred.local.dir指定的本地目录中，TaskTracker初始化时会对这些目录进行一次检测，之后，TaskTracker会周期性(由mapred.disk.healthChecker.interval配置，默认60s)地对这些正常目录进行检测，如果发现故障目录，TaskTracker就会重新对自己进行初始化。
 
-* 发送心跳。
+4.发送心跳。
 
 TaskTracker将当前节点运行时信息，例如TaskTracker基本情况、资源使用情况、任务运行状态等，通过心跳信息向JobTracker进行汇报，同时接受来自JobTracker的各种指令。
 
@@ -517,7 +517,7 @@ TaskTracker基本情况、资源使用情况、任务运行状态等信息会被
 但不是每次心跳都会发送节点资源信息申请新的Task，只有当存在空闲的map或者reduce slot，并且map输出目录大于mapred.local.dir.minspackekill才会将上面的节点资源信息放到TaskTrackerStatus中,向JobTracker发送节点资源使用情况申请新任务。
 
 
-2. JobTracker端
+* JobTracker端
 
 JobTracker端的主要任务是处理TaskTracker发送的心跳信息，判断TaskTracker是否存活，及时让JobTracker获取到各个节点上的资源使用情况和任务运行情况和为TaskTracker下达各种命令等功能。
 
